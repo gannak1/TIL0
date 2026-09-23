@@ -341,6 +341,7 @@ dependencies = [
     { name = "langchain" },
     { name = "langchain-ollama" },
     { name = "langgraph" },
+    { name = "python-dotenv" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 
@@ -350,6 +351,7 @@ requires-dist = [
     { name = "langchain", specifier = ">=1.4.0" },
     { name = "langchain-ollama", specifier = ">=1.1.0" },
     { name = "langgraph", specifier = ">=1.2.11" },
+    { name = "python-dotenv", specifier = ">=1.2.3" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.52.4" },
 ]
 
