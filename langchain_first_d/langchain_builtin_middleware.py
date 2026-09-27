@@ -76,10 +76,42 @@ def save_customer_feedback(feedback:str)->str:
     """    
     return "적용 완료"
 
-agent = create_agent(model = qwen_359b(), tools = [save_customer_feedback], middleware = [LLMToolEmulator(model=qwen_359b()),PIIMiddleware(pii_type="email",strategy="redact",apply_to_input=True), PIIMiddleware(pii_type="credit_card",strategy="mask",apply_to_input=True)])
+# agent = create_agent(model = qwen_359b(), tools = [save_customer_feedback], middleware = [LLMToolEmulator(model=qwen_359b()),PIIMiddleware(pii_type="email",strategy="redact",apply_to_input=True), PIIMiddleware(pii_type="credit_card",strategy="mask",apply_to_input=True)])
 
-prompt = "안녕하세요. 이메일은 user123@example.com 입니다. 제 카드번호는 1234123443214321 입니다."
-response = agent.invoke({"messages": [{"role": "user", "content": prompt}]})
+# prompt = "안녕하세요. 이메일은 user123@example.com 입니다. 제 카드번호는 1234123443214321 입니다."
+# response = agent.invoke({"messages": [{"role": "user", "content": prompt}]})
 
-# 에이전트가 실제로 넘겨받은(마스킹된) 메시지 확인
-print(response["messages"][0].content)
+# # 에이전트가 실제로 넘겨받은(마스킹된) 메시지 확인
+# print(response["messages"][0].content)
+
+# 휴대폰 번호(010-XXXX-XXXX)를 잡아내는 커스텀 정규식 패턴
+phone_number_regex = r"\b(010)[-\s]?(\d{3,4})[-\s]?(\d{4})\b"
+
+phone_masking_middleware = PIIMiddleware(
+    pii_type = "phone_number",
+    detector = phone_number_regex,
+    strategy="mask",
+    apply_to_input = True,
+)
+
+# 함수를 이용한 복잡한 검증 로직
+import re
+
+def detect_api_key(content:str)->list[dict[str,str|int]]:
+    """'sk-'로 시작하는 32자리 문자열을 API키로 간주하고 탐지합니다."""
+    matches = []
+    pattern = r"sk-[a-zA-Z0-9]{32}"
+    for match in re.finditer(pattern,content):
+        matches.append({
+            "text":match.group(0),
+            "start":match.start(),
+            "end":match.end()
+        }),
+    return matches
+
+api_key_blocker = PIIMiddleware(
+    pii_type="api_key",
+    detector=detect_api_key,
+    strategy="block",
+    apply_to_input=True,
+)
