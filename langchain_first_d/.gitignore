@@ -7,5 +7,8 @@ wheels/
 *.egg-info
 content/
 
+# UserIgnore
+.ignore/
+
 # Virtual environments
 .venv
