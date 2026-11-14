@@ -1,0 +1,9 @@
+빌드
+docker build -t local-postgres .
+실행
+docker run -d --name local-postgres -p 8765:5432 -e POSTGRES_PASSWORD=localdev -v postgres-data:/var/lib/postgresql/data local-postgres
+
+내부 접속
+docker exec -it local-postgres psql -U postgres -d postgres
+내부에서 psql 호출
+psql -U postgres -d postgres
