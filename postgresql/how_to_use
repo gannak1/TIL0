@@ -7,3 +7,13 @@ docker run -d --name local-postgres -p 8765:5432 -e POSTGRES_PASSWORD=localdev -
 docker exec -it local-postgres psql -U postgres -d postgres
 내부에서 psql 호출
 psql -U postgres -d postgres
+
+
+PG Vector
+docker run `
+  --name pgvector-container `
+  -e POSTGRES_USER=langchain `
+  -e POSTGRES_PASSWORD=langchain `
+  -e POSTGRES_DB=langchain `
+  -p 6024:5432 `
+  -d pgvector/pgvector:pg16
