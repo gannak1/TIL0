@@ -35,7 +35,7 @@ db.add_documents(
         Document(
             page_content="duck are also found in the pond",
             metadata = {"location":"pond","topic":"animal",},
-        )
+        )   
     ],
     ids = ids
 )
