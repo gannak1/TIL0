@@ -24,7 +24,7 @@ db = PGVector.from_documents(
 results = db.similarity_search('왜 말이 없어',k=4)
 print(results)
 
-ids = [str(uuid.uuid4),str(uuid.uuid4())]
+ids = [str(uuid.uuid4()),str(uuid.uuid4())]
 
 db.add_documents(
     [
@@ -40,4 +40,4 @@ db.add_documents(
     ids = ids
 )
 
-db.delete(ids = [1])
+db.delete(ids = ids)
